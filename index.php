@@ -16,7 +16,8 @@
             color: #333;
         }
 
-        form {
+         section {
+            display: none;
             max-width: 600px;
             margin: 0 auto;
             padding: 20px;
@@ -25,35 +26,45 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
         }
+        form {
+            display: block;
+        }
+
+        
         nav {
             background-color: #4caf50;
-            width:110px;
-            padding-bottom:10px;
             position: fixed;
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             align-items: center;
             box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            justify-content: space-around; 
             top:0;
             left:0;
+            
         }
-        nav a:hover {
+        nav div:hover {
             background-color: #45a049;
             color: #fff; 
         }
-        nav a {
+        nav div {
             display: block;
             color: white;
             text-align: center;
-            padding: 14px 16px;
+            padding: 10px 12px;
             text-decoration: none;
             cursor: pointer;
-            border-bottom: 3px solid white;
+            
             transition: background-color 0.3s;
+        }
+        nav div.selected {
+            border-bottom: 3px solid white;
+            cursor: pointer;
         }
         
         section {
-            margin: 20px;
+            margin: 20px auto;
         }
 
         h2 {
@@ -99,9 +110,7 @@
             margin-bottom: 20px;
         }
 
-        /* Add more styling as needed */
-
-        /* Responsive styles */
+   
         @media (max-width: 600px) {
             form {
                 width: 90%;
@@ -112,10 +121,10 @@
 </head>
 
 <nav>
-        <a href="#insert">Insert</a>
-        <a href="#update">Update</a>
-        <a href="#delete">Delete</a>
-        <a href="#view">View</a>
+        <div onclick="toggleSection('insert')" data-section="insert" >Insert</div>
+        <div onclick="toggleSection('update')" data-section= "update">Update</div>
+        <div onclick="toggleSection('delete')"data-section="delete">Delete</div>
+        <div onclick="toggleSection('view')" data-section="view" class="selected" >View</div>
     </nav>
 <body>
     <h2>Gestion des salles</h2>
@@ -233,6 +242,24 @@
         <input type="submit" name="select2" value="Afficher">
 
         </section>
+
+        <script>
+        document.getElementById('view').style.display = 'block';
+
+        function toggleSection(sectionId) {
+            document.querySelectorAll('section').forEach(section => {
+                section.style.display = 'none';
+            });
+
+            document.getElementById(sectionId).style.display = 'block';
+
+            document.querySelectorAll('nav div').forEach(div => {
+                div.classList.remove('selected');
+            });
+
+            document.querySelector(`nav div[data-section="${sectionId}"]`).classList.add('selected');
+        }
+    </script>
         
 
 </body>
