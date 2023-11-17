@@ -17,6 +17,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["Salle"])) {
         echo "Error deleting: " . $delete->error;
     }
     
-    $delete->close();
-    
+    $delete->close();  
 }
+?>

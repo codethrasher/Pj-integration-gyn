@@ -17,7 +17,7 @@ if (isset($_POST["update"])) {
     $newCharge =$_POST["newCharge"];
     $newDisponible = $_POST["newDisponible"];
 
-    $update = "UPDATE Salle SET Salle = '$newSalle', Departement = '$newDepartement', Categorie = '$newCategorie', Responsable = '$newResponsable', Charge = $newCharge, Nb_place_examen = $newNbPlaceExamen, Nb_lignes = $newNbLignes, Nb_col = $newNbCol, Nb_surv = $newNbSurv, Type = '$newType', $newDisponible='newDisponible' WHERE Salle = '$oldSalle'";
+    $update = "UPDATE Salle SET Salle = '$newSalle', Departement = '$newDepartement', Categorie = '$newCategorie', Responsable = '$newResponsable', Charge = $newCharge, Nb_place_examen = $newNbPlaceExamen, Nb_lignes = $newNbLignes, Nb_col = $newNbCol, Nb_surv = $newNbSurv, Type = '$newType', Disponible='$newDisponible' WHERE Salle = '$oldSalle'";
     if ($conn->query($update) === true) {
         echo "Updated";
         header('Location: view.php');
