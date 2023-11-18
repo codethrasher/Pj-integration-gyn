@@ -9,43 +9,49 @@
 
 <body>
     <h1>Add record here</h1>
-    <form method="post" action="create.php">
-   
+    <form method="post" action="create.php" >
+        <table>
+
+        
             <?php
         
-            echo "<select name='MatriculeProf' required>";
-            require 'db_connection.php'; 
+        require 'db_connection.php'; 
+            echo "<tr>
+            <td>Matricule de prof :</td><td>
+            <select name='MatriculeProf' required>";
             $result = $conn->query("select * FROM prof");
             while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-                echo '<option value="' . $row['MatriculeProf'] . '">' . $row['Nom'] . '</option>';
+                echo '<option value="' . $row['MatProf'] . '">' . $row['Nom'] . '</option>';
             }
-            echo "</select>";
+            echo "</select></td></tr>";
 
-            echo "<select name='CodeClasse' required>";
+            echo "<tr><td>Code Classe :</td><td><select name='CodeClasse' required>";
             $result2 = $conn->query("select * FROM classe");
             while ($row = $result2->fetch(PDO::FETCH_ASSOC)) {
-                echo '<option value="' . $row['CodeClasse'] . '">' . $row['numClasse'] . '</option>';
+                echo '<option value="' . $row['CodClasse'] . '">' . $row['IntClasse'] . '</option>';
             }
-            echo "</select>";
+            echo "</select></td></tr>";
 
 
-            echo "<select name='CodeMatiere' required>";
-            $result3 = $conn->query("select * FROM matiere");
+            echo "<tr><td>Code Matière :</td><td><select name='CodeMatiere' required>";
+            $result3 = $conn->query("select * FROM matieres");
             while ($row = $result3->fetch(PDO::FETCH_ASSOC)) {
-                echo '<option value="' . $row['CodeMatière'] . '">' . $row['NomMatière'] . '</option>';
+                echo '<option value="' . $row['Code Matière'] . '">' . $row['Nom Matière'] . '</option>';
             }
-            echo "</select>";
+            echo "</select></td></tr>";
 
             ?>
         
-        <input type="number" name="Session" placeholder="Session" required>
-        <input type="datetime-local" name="DateAbs" required>
-        <input type="text" name="Seance" placeholder="Seance" required>
-        <input type="text" name="Motif" placeholder="Motif" maxlength="60">
-        <input type="text" name="TypeSeance" placeholder="TypeSeance" maxlength="10">
-        <label for="Justifier">Justifier:</label>
-        <input type="checkbox" name="Justifier">
-        <input type="submit" value="Add Record">
+        <tr><td>Session :</td><td><input type="number" name="Session" placeholder="Session" required ></td></tr>
+        <tr><td>Date d'absence :</td><td><input type="datetime-local" name="DateAbs" required></td></tr>
+        <tr><td>Seance :</td><td><input type="text" name="Seance" placeholder="Seance" required></td></tr>
+        <tr><td>Motif :</td><td><input type="text" name="Motif" placeholder="Motif" maxlength="60"></td></tr>
+        <tr><td>Type de Seance :</td><td><input type="text" name="TypeSeance" placeholder="TypeSeance" maxlength="10"></td></tr>
+        <tr><td><label for="Justifier">Justifier:</label></td>
+        <td><input type="checkbox" name="Justifier"></td></tr>
+        <tr><td><input type="submit" value="Add Record"></td> <td><input type="reset" value="reset"></td></tr>
+    </table>
+   
     </form>
 
 

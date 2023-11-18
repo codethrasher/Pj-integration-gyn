@@ -9,15 +9,18 @@
 </head>
 
 <body>
-    <a href="createView.php">
-        <h3>create new record</h3>
-    </a>
-    <br>
+    
+    
+    <div style="margin: 30px;" >
+        <h1 style="text-align: center;margin-top: 50px;">Les Absences</h1>
+        <h3>Filtrer:</h3>
+        <form action="GET">
+            <table>
+                
+                </body>
 
-</body>
-
-</html>
-<?php
+                </html>
+                <?php
 ini_set('display_errors', "1");
 error_reporting(E_ALL);
 require "db_connection.php";
@@ -67,9 +70,9 @@ if (!empty($codeClasseFilter)) {
 if (!empty($codeMatiereFilter)) {
     $requete .= " and CodeMatiere = '$codeMatiereFilter'";
 }
-if ($justifierFilter === '1') {
+if (isset($_GET['justifierFilter']) && $_GET['justifierFilter'] === '1') {
     $requete .= " and Justifier = 1";
-} elseif ($justifierFilter === '0') {
+} elseif (isset($_GET['justifierFilter']) && $_GET['justifierFilter'] === '0') {
     $requete .= " and Justifier = 0";
 }
 
@@ -77,8 +80,7 @@ if ($justifierFilter === '1') {
 
 $r = $conn->query($requete);
 
-echo "<form method='GET'>";
-echo "<table>";
+
 echo "<tr><td>Numero d'absence:</td> <td><input type='number' name='numAbsFilter' value='$numAbsFilter'></td></tr>";
 
 echo "<tr><td>Matricule du Professeur:</td> <td><input type='number' name='matProfFilter' value='$matProfFilter'></td></tr>";
@@ -101,13 +103,16 @@ echo "<tr><td>Code du matière:</td> <td><input type='text' name='codeMatiereFil
 echo "<tr>
     <td>Justifier:</td>
     <td>
-        <label><input type='checkbox' name='justifierFilter' value='1' <?php echo ($justifierFilter === '1') ? 'checked' : ''; ?>Oui</label>
-        <label><input type='checkbox' name='justifierFilter' value='0' <?php echo ($justifierFilter === '0') ? 'checked' : ''; ?> Non</label>
-    </td>
-</tr>";
-
-echo "<tr><td><input type='submit' value='Appliquer'></td></tr>";
-echo "</table>";
+        <label><input type='radio' name='justifierFilter' value='1' <?php echo ($justifierFilter === '1') ? 'checked' : ''; ?>Oui</label>
+        <label><input type='radio' name='justifierFilter' value='0' <?php echo ($justifierFilter === '0') ? 'checked' : ''; ?> Non</label>
+        </td>
+        </tr>";
+        
+        echo "<tr>
+        <td><input type='submit' value='Filter'></td>
+        <td><input type='reset' value='Reset'></td>
+        </tr>";
+        echo '</table>';
 echo "</form><br>";
 if ($r->rowCount() > 0) {
     echo "<table border='1' style='text-align:center>'";
@@ -123,9 +128,9 @@ if ($r->rowCount() > 0) {
         <th>Justifier</th>
         <th>Action</th>
         </tr>";
-
-    while ($ligne = $r->fetch(PDO::FETCH_ASSOC)) {
-        echo '<tr>';
+        
+        while ($ligne = $r->fetch(PDO::FETCH_ASSOC)) {
+            echo '<tr>';
         echo "<td>" . $ligne["NumAbs"] . "</td>";
         echo "<td>" . $ligne["MatriculeProf"] . "</td>";
         echo "<td>" . $ligne["DateAbs"] . "</td>";
@@ -141,12 +146,16 @@ if ($r->rowCount() > 0) {
         <a href='updateView.php?NumAbs=" . $ligne["NumAbs"] . "'>update</a>" . "</td>";
         echo '</tr>';
     }
-    echo "</table>";
+    echo "</table>
+    <a href='createView.php'>
+    <h3>Ajouter</h3>
+    </a></div>";
+    
+ 
 } else {
     echo "Aucune donnees trouvées";
 }
 
 $conn = null;
-
 
 ?>
