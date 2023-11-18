@@ -1,25 +1,30 @@
 <?php
+require "connect.php";
 
-    if(isset($_GET["MatProf"])){
-        $matProf = $_GET["MatProf"];
-        
-        $pdo = new PDO("mysql:host=localhost;dbname=scolarite1", "root", "");
+if (isset($_GET["MatProf"])) {
+    $matProf = $_GET["MatProf"];
 
-        
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $conn = connect($host, $db, $user, $password);
 
-        $sql = "DELETE FROM modifgrade WHERE MatProf = '$matProf'";
+    try {
+        $sql = "DELETE FROM modifgrade WHERE MatProf = :matProf";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':matProf', $matProf, PDO::PARAM_STR);
+        $stmt->execute();
 
-        $res = $pdo->exec($sql);
-        if ($res > 0) {
+        $rowCount = $stmt->rowCount();
+
+        if ($rowCount > 0) {
             header("location: select.php");
         } else {
-            echo "Error";
+            echo "Erreur : aucune ligne affectée.";
         }
-
-        $pdo = null;
-    } else {
-        echo "error";
+    } catch (PDOException $e) {
+        echo "Erreur: " . $e->getMessage();
     }
 
+    $conn = null;
+} else {
+    echo "Erreur : MatProf non défini.";
+}
 ?>

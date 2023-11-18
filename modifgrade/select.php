@@ -21,9 +21,9 @@
     </form>
 
     <?php
+    require "connect.php";
     if ($_SERVER["REQUEST_METHOD"] == "GET") {
-        $pdo = new PDO("mysql:host=localhost;dbname=scolarite1", "root", "");
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $conn = connect($host, $db, $user, $password);
 
         $grade = $_GET['grade'] ?? '';
         $dateNomin = $_GET['dateNomin'] ?? '';
@@ -36,7 +36,7 @@
                        AND m.DateNomin LIKE :dateNomin
                        AND m.MatProf LIKE :matProf";
 
-        $stmt = $pdo->prepare($requete);
+        $stmt = $conn->prepare($requete);
         $stmt->bindValue(':grade', '%' . $grade . '%', PDO::PARAM_STR);
         $stmt->bindValue(':dateNomin', '%' . $dateNomin . '%', PDO::PARAM_STR);
         $stmt->bindValue(':matProf', '%' . $matProf . '%', PDO::PARAM_STR);
@@ -57,7 +57,7 @@
             echo "Aucun résultat trouvé pour les critères donnés.";
         }
 
-        $pdo = null;
+        $conn = null;
     }
     ?>
 </body>
