@@ -1,21 +1,32 @@
 <?php
-$matProf = $_POST["MatProf"];
-$newGrade = $_POST["Grade"];
-$newDateNomin = $_POST["DateNomin"];
-$pdo = new PDO("mysql:host=localhost;dbname=scolarite1", "root", "");
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-$query = "UPDATE modifgrade SET Grade = :newGrade, DateNomin = :newDateNomin WHERE MatProf = :matProf";
-$stmt = $pdo->prepare($query);
-$stmt->bindParam(":newGrade", $newGrade, PDO::PARAM_STR);
-$stmt->bindParam(":newDateNomin", $newDateNomin, PDO::PARAM_STR);
-$stmt->bindParam(":matProf", $matProf, PDO::PARAM_STR);
+require "connect.php";
 
-if ($stmt->execute()) {
-    echo "Le grade a été modifié avec succès pour le MatProf: " . $matProf;
-    header("location: select.php");
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $matProf = $_POST["MatProf"];
+    $newGrade = $_POST["Grade"];
+    $newDateNomin = $_POST["DateNomin"];
+
+    $conn = connect($host, $db, $user, $password);
+
+    try {
+        $query = "UPDATE modifgrade SET Grade = :newGrade, DateNomin = :newDateNomin WHERE MatProf = :matProf";
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(":newGrade", $newGrade, PDO::PARAM_STR);
+        $stmt->bindParam(":newDateNomin", $newDateNomin, PDO::PARAM_STR);
+        $stmt->bindParam(":matProf", $matProf, PDO::PARAM_STR);
+
+        if ($stmt->execute()) {
+            echo "Le grade a été modifié avec succès pour le MatProf: " . $matProf;
+            header("location: select.php");
+        } else {
+            echo "Erreur";
+        }
+    } catch (PDOException $e) {
+        echo "Erreur: " . $e->getMessage();
+    }
+
+    $conn = null;
 } else {
-    echo "Erreur";
+    echo "Erreur : méthode de requête non valide.";
 }
-
-$pdo = null;
 ?>

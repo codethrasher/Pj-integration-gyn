@@ -1,15 +1,16 @@
 <?php
+require "connect.php";
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
-        $pdo = new PDO("mysql:host=localhost;dbname=scolarite1", "root", "");
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $conn = connect($host, $db, $user, $password);
 
         $grade = $_POST['grade'];
         $dateNomin = $_POST['dateNomin'];
         $matProf = $_POST['matProf'];
 
         $sql = "INSERT INTO modifgrade (Grade, DateNomin, MatProf) VALUES (:grade, :dateNomin, :matProf)";
-        $stmt = $pdo->prepare($sql);
+        $stmt = $conn->prepare($sql);
         $stmt->bindParam(':grade', $grade);
         $stmt->bindParam(':dateNomin', $dateNomin);
         $stmt->bindParam(':matProf', $matProf);
@@ -19,16 +20,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
+    } finally {
+        $conn = null;
     }
 }
 
 try {
-    $pdo = new PDO("mysql:host=localhost;dbname=scolarite1", "root", "");
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $conn = connect($host, $db, $user, $password);
 
-    $profs = $pdo->query("SELECT MatProf FROM prof")->fetchAll(PDO::FETCH_ASSOC);
+    $profs = $conn->query("SELECT MatProf FROM prof")->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
+} finally {
+    $conn = null;
 }
 ?>
 
